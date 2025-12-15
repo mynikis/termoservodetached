@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermostat Visual Tester</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Thermostat Visual Tester</h1>
+        
+        <div class="thermostat">
+            <div class="temp-display">
+                <span id="current-temp">140.0</span>&deg;C
+            </div>
+            <div class="heater-status">
+                <span>Heater:</span>
+                <span id="heater-state" class="off">OFF</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <label for="temp-slider">Simulate Temperature</label>
+            <input type="range" id="temp-slider" min="0" max="200" value="140" step="0.1">
+            <p>Target: <span id="slider-value">140.0</span>&deg;C</p>
+        </div>
+
+        <div class="info">
+            <p>Heater turns ON below 130&deg;C and OFF above 150&deg;C.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

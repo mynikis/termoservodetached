@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #2c2c2c;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border: 1px solid #444;
+}
+
+h1 {
+    color: #4CAF50;
+    margin-bottom: 2rem;
+}
+
+.thermostat {
+    margin-bottom: 2.5rem;
+}
+
+.temp-display {
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.heater-status {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+#heater-state {
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#heater-state.off {
+    color: #f44336;
+}
+
+#heater-state.on {
+    color: #4CAF50;
+    text-shadow: 0 0 10px #4CAF50;
+}
+
+.controls {
+    margin-bottom: 2rem;
+}
+
+.controls label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+#temp-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
+.info {
+    color: #888;
+    font-size: 0.9rem;
+}
