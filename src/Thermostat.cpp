@@ -1,8 +1,10 @@
 #include "Thermostat.h"
+#include <string> // Required for std::to_string
+#include <algorithm> // Required for std::sort
 
 // Definition for the external millis() function.
 // In a test environment, we will link a mock implementation.
-unsigned long millis();
+extern "C" unsigned long millis();
 
 Thermostat::Thermostat(IThermocouple& thermo, IServo& servo, IDisplay& display)
     : thermocouple(thermo),
@@ -13,7 +15,6 @@ Thermostat::Thermostat(IThermocouple& thermo, IServo& servo, IDisplay& display)
       maxTempC(-1000.0) {}
 
 void Thermostat::setup() {
-    // The servo pin and range are now managed by the adapter/main.cpp
     myServo.write(SERVO_HEATER_OFF_POS);
     heaterOn = false;
     lastServoMoveTime = millis();
@@ -27,16 +28,50 @@ void Thermostat::setup() {
 }
 
 void Thermostat::loop() {
-    double currentTempC = thermocouple.readCelsius();
-    updateHeaterState(currentTempC);
-    manageServoAttachment();
-    updateDisplay(currentTempC);
+    // 1. Read raw temperature and add to our buffer
+    double rawTemp = thermocouple.readCelsius();
+    tempReadings.push_back(rawTemp);
+
+    // 2. Trim the buffer if it's too large
+    if (tempReadings.size() > MEDIAN_WINDOW_SIZE) {
+        tempReadings.erase(tempReadings.begin());
+    }
+
+    // 3. Only proceed if we have a full window of readings
+    if (tempReadings.size() == MEDIAN_WINDOW_SIZE) {
+        double medianTemp = getMedianTemperature();
+
+        // 4. Use the stable median temperature for all logic
+        updateHeaterState(medianTemp);
+        manageServoAttachment();
+        updateDisplay(medianTemp);
+    } else {
+        // Optional: Display a "gathering data" message until the buffer is full
+        display.clearDisplay();
+        display.setCursor(0, 10);
+        display.setTextSize(1);
+        display.print("Gathering data... ");
+        display.print(std::to_string(tempReadings.size()).c_str());
+        display.print("/");
+        display.print(std::to_string(MEDIAN_WINDOW_SIZE).c_str());
+        display.display();
+    }
+}
+
+double Thermostat::getMedianTemperature() {
+    // Create a copy of the vector to avoid modifying the original
+    std::vector<double> sortedReadings = tempReadings;
+    
+    // Sort the copy
+    std::sort(sortedReadings.begin(), sortedReadings.end());
+    
+    // Return the middle element
+    return sortedReadings[sortedReadings.size() / 2];
 }
 
 void Thermostat::updateHeaterState(double currentTempC) {
     if (currentTempC < HEATER_ON_TEMP && !heaterOn) {
         if (!myServo.attached()) {
-            // Pin and range are managed by the concrete implementation
             myServo.attach(0, 0, 0); 
         }
         myServo.write(SERVO_HEATER_ON_POS);
@@ -73,7 +108,7 @@ void Thermostat::updateDisplay(double currentTempC) {
 
         display.setTextSize(1);
         display.setCursor(0, 0);
-        display.print("Current:");
+        display.print("Median Temp:"); // Changed label
         display.setTextSize(2);
         display.setCursor(0, 10);
         display.print(currentTempC, 1);

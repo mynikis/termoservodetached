@@ -11,14 +11,23 @@
         <h1>Thermostat Visual Tester</h1>
         
         <div class="thermostat">
-            <div class="temp-display">
-                <span id="current-temp">140.0</span>&deg;C
+            <div class="temp-main">
+                <span class="label">Median Temp</span>
+                <div class="temp-display">
+                    <span id="current-temp">140.0</span>&deg;C
+                </div>
             </div>
             <div class="heater-status">
                 <span>Heater:</span>
                 <span id="heater-state" class="off">OFF</span>
             </div>
         </div>
+
+        <div class="readings-buffer">
+            <span class="label">Readings Buffer</span>
+            <div id="buffer-display">[ ]</div>
+        </div>
+
 
         <div class="controls">
             <label for="temp-slider">Simulate Temperature</label>

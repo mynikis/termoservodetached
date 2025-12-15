@@ -26,13 +26,40 @@ h1 {
 }
 
 .thermostat {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.temp-main .label {
+    font-size: 1.2rem;
+    color: #aaa;
 }
 
 .temp-display {
     font-size: 4.5rem;
     font-weight: 700;
     color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.readings-buffer {
+    margin-bottom: 2.5rem;
+    background-color: #111;
+    padding: 0.75rem;
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+.readings-buffer .label {
+    font-size: 0.8rem;
+    color: #888;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+#buffer-display {
+    font-size: 1.1rem;
+    color: #ddd;
+    word-wrap: break-word;
 }
 
 .heater-status {

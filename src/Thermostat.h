@@ -5,6 +5,8 @@
 
 // This function will be provided by the Arduino framework in production
 // and by a mock implementation in the test environment.
+#include <vector>
+
 extern "C" unsigned long millis();
 
 class Thermostat {
@@ -25,6 +27,7 @@ private:
     static constexpr int SERVO_HEATER_OFF_POS = 0;
     static constexpr int SERVO_HEATER_ON_POS  = 180;
     static constexpr unsigned long SERVO_DETACH_DELAY = 5000;
+    static const int MEDIAN_WINDOW_SIZE = 7;
 
     // Hardware interfaces
     IThermocouple& thermocouple;
@@ -35,7 +38,9 @@ private:
     bool heaterOn;
     unsigned long lastServoMoveTime;
     float maxTempC;
+    std::vector<double> tempReadings;
 
+    double getMedianTemperature();
     void updateHeaterState(double currentTempC);
     void updateDisplay(double currentTempC);
     void manageServoAttachment();
